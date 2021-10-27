@@ -20,7 +20,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install pyyaml cloudinary
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-      - run: python scripts/u2cloudinary.py
+      - name: Run script
+        env:
+          CLOUDINARY_NAME: ${{ secrets.CLOUDINARY_NAME }}
+          CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+          CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
+        run: python scripts/u2cloudinary.py
       - name: Commit meta info
         uses: EndBug/add-and-commit@v7
         with:
