@@ -1,0 +1,28 @@
+name: Upload Images to Cloudinary
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: upload
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+          architecture: x64
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml cloudinary
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - run: python scripts/u2cloudinary.py
+      - name: Commit meta info
+        uses: EndBug/add-and-commit@v7
+        with:
+          add: 'kdr2-com/images'
+          author_name: GitHub Actions
