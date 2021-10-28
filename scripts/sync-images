@@ -1,0 +1,14 @@
+#!/bin/bash
+# -*- sh -*-
+
+BASENAME=`dirname $0`/..
+mkdir -p $BASENAME/kdr2-com/images/
+
+# upload
+rsync -avr $BASENAME/kdr2-com/images/ kdr2@kdr2.com:depot/img-kdr2-com/
+
+# download
+rsync -avr kdr2@kdr2.com:depot/img-kdr2-com/ $BASENAME/kdr2-com/images/
+
+# upload to cloudinary
+# python $BASENAME/scripts/u2cloudinary.py
