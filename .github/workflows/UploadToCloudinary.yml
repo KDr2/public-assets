@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - josh
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -29,5 +30,5 @@ jobs:
       - name: Commit meta info
         uses: EndBug/add-and-commit@v7
         with:
-          add: 'kdr2-com/images'
+          add: '.' #'kdr2-com/images'
           author_name: GitHub Actions

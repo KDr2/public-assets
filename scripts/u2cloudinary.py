@@ -7,10 +7,13 @@ import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 
+BRANCH = 'josh'
 META_EXT = ".cloudinary"
 APP_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-IMG_ROOT = os.path.join(APP_ROOT, "kdr2-com/images")
 
+IMG_DIR_K = "kdr2-com/images"
+IMG_DIR_J = "joshinbrackets/images"
+IMG_DIR = [IMG_DIR_K]
 
 def init_cloudinary():
     config_file = os.path.join(APP_ROOT, "config/cloudinary.private.yml")
@@ -26,19 +29,18 @@ def init_cloudinary():
             static_image_support=True,
         )
 
-
-def local_path(path):
-    return os.path.join(IMG_ROOT, path)
-
+def local_path(path=''):
+    return os.path.join(APP_ROOT, IMG_DIR[0], path)
 
 def asset_url(path):
-    return "https://raw.githubusercontent.com/KDr2/public-assets/" + \
-        "main/kdr2-com/images/{}".format(path)
-
+    return "https://raw.githubusercontent.com/KDr2/public-assets/" + BRANCH + \
+        "/{}/{}".format(IMG_DIR[0], path)
 
 def public_id(path):
-    return "img-kdr2-com/%s" % (os.path.splitext(path)[0])
-
+    if IMG_DIR[0] == IMG_DIR_K:
+        return "img-kdr2-com/%s" % (os.path.splitext(path)[0])
+    if IMG_DIR[0] == IMG_DIR_J:
+        return "joshinbrackets/%s" % (os.path.splitext(path)[0])
 
 def upload2cloudinary(path):
     local_img_path = local_path(path)
@@ -65,7 +67,7 @@ def upload2cloudinary(path):
 
 def walk_fun(root, _dirs, files):
     print("=> Entering Drirectory: %s" % root)
-    path = root.replace(IMG_ROOT + "/", "")
+    path = root.replace(local_path(), "")
     for f in files:
         if f.endswith(META_EXT):
             continue
@@ -76,5 +78,10 @@ def walk_fun(root, _dirs, files):
 
 if __name__ == '__main__':
     init_cloudinary()
-    for root, dirs, files in os.walk(IMG_ROOT):
+    IMG_DIR[0] = IMG_DIR_K
+    for root, dirs, files in os.walk(local_path()):
+        walk_fun(root, dirs, files)
+
+    IMG_DIR[0] = IMG_DIR_J
+    for root, dirs, files in os.walk(local_path()):
         walk_fun(root, dirs, files)
