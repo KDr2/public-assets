@@ -7,7 +7,7 @@ import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 
-BRANCH = 'josh'
+BRANCH = 'main'
 META_EXT = ".cloudinary"
 APP_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
